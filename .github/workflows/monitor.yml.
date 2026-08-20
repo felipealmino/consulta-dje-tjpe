@@ -1,0 +1,37 @@
+name: Monitorar Nomeacoes TJPE
+
+on:
+  schedule:
+    # Executa de segunda a sexta às 09:30 UTC (06:30 BRT)
+    - cron: '30 9 * * 1-5'
+  workflow_dispatch: # Botão manual para rodar a qualquer momento
+
+permissions:
+  contents: write
+
+jobs:
+  verificar-diario:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar Dependências
+        run: pip install -r requirements.txt
+
+      - name: Executar Leitura do Caderno Administrativo
+        run: python monitor.py
+
+      - name: Atualizar status.json no Repositório
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add status.json
+          git commit -m "Auto: Atualiza status do DJe Administrativo [skip ci]" || exit 0
+          git push
