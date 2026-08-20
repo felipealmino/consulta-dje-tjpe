@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Consulta DJE / TJPE</title>
+  <title>Buscador DJe TJPE</title>
   <style>
     :root {
       --bg: #f8fafc;
       --card-bg: #ffffff;
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
+      --primary: #800000; /* Cor bordô característica do TJPE */
+      --primary-hover: #5c0000;
       --text: #0f172a;
       --text-muted: #64748b;
       --border: #e2e8f0;
-      --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     }
 
     body {
@@ -28,24 +28,23 @@
       color: var(--text);
       display: flex;
       justify-content: center;
-      padding: 2.5rem 1rem;
+      padding: 3rem 1rem;
       min-height: 100vh;
     }
 
     .container {
       width: 100%;
-      max-width: 780px;
+      max-width: 650px;
     }
 
     header {
-      margin-bottom: 2rem;
       text-align: center;
+      margin-bottom: 2rem;
     }
 
     header h1 {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: var(--text);
+      font-size: 1.6rem;
+      color: var(--primary);
       margin-bottom: 0.5rem;
     }
 
@@ -54,17 +53,17 @@
       font-size: 0.95rem;
     }
 
-    .search-card {
+    .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: var(--card-shadow);
+      border-radius: 10px;
+      padding: 1.75rem;
+      box-shadow: var(--shadow);
       margin-bottom: 1.5rem;
     }
 
     .form-group {
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
     }
 
     label {
@@ -72,24 +71,22 @@
       font-size: 0.875rem;
       font-weight: 600;
       margin-bottom: 0.35rem;
-      color: var(--text);
     }
 
     input, select {
       width: 100%;
-      padding: 0.75rem 1rem;
+      padding: 0.75rem 0.9rem;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 6px;
       font-size: 0.95rem;
       outline: none;
-      transition: border-color 0.2s;
     }
 
     input:focus, select:focus {
       border-color: var(--primary);
     }
 
-    .form-row {
+    .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
@@ -100,85 +97,30 @@
       background-color: var(--primary);
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       padding: 0.85rem;
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.2s;
-      margin-top: 0.5rem;
+      transition: background 0.2s;
     }
 
     button:hover {
       background-color: var(--primary-hover);
     }
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    #status {
-      margin: 1.5rem 0;
-      font-size: 0.95rem;
-      text-align: center;
-      color: var(--text-muted);
-    }
-
-    .result-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--primary);
-      border-radius: 8px;
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-      box-shadow: var(--card-shadow);
-    }
-
-    .result-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .proc-number {
-      font-weight: 700;
-      color: var(--primary);
-      font-size: 1rem;
-    }
-
-    .badge-date {
-      background-color: var(--bg);
-      border: 1px solid var(--border);
-      padding: 0.2rem 0.6rem;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .meta-info {
+    .info-box {
       font-size: 0.85rem;
       color: var(--text-muted);
-      margin-bottom: 0.75rem;
-    }
-
-    .result-text {
-      font-size: 0.9rem;
-      line-height: 1.5;
-      color: #334155;
+      line-height: 1.4;
       background: #f1f5f9;
-      padding: 0.85rem;
+      padding: 1rem;
       border-radius: 6px;
-      white-space: pre-wrap;
-      max-height: 200px;
-      overflow-y: auto;
+      border-left: 3px solid var(--primary);
     }
 
-    @media (max-width: 600px) {
-      .form-row {
+    @media (max-width: 500px) {
+      .grid-2 {
         grid-template-columns: 1fr;
       }
     }
@@ -188,18 +130,18 @@
 
   <div class="container">
     <header>
-      <h1>Consulta Processual DJEN / TJPE</h1>
-      <p>Busque publicações e comunicações oficiais de forma rápida</p>
+      <h1>Diário de Justiça Eletrônico - TJPE</h1>
+      <p>Pesquisa direta nos Cadernos Oficiais do Tribunal de Justiça de Pernambuco</p>
     </header>
 
-    <main class="search-card">
-      <form id="searchForm">
+    <main class="card">
+      <form id="djeForm">
         <div class="form-group">
-          <label for="nomeParte">Nome da Parte ou Interessado</label>
-          <input type="text" id="nomeParte" placeholder="Ex: Maria da Silva" required autocomplete="off">
+          <label for="termo">Nome ou Termo da Busca</label>
+          <input type="text" id="termo" placeholder="Ex: Nome da pessoa ou número de processo" required>
         </div>
 
-        <div class="form-row">
+        <div class="grid-2">
           <div class="form-group">
             <label for="dataInicio">Data Início</label>
             <input type="date" id="dataInicio" required>
@@ -211,104 +153,43 @@
         </div>
 
         <div class="form-group">
-          <label for="tribunal">Tribunal</label>
-          <select id="tribunal">
-            <option value="TJPE" selected>TJPE - Tribunal de Justiça de Pernambuco</option>
-            <option value="TRF5">TRF5 - Tribunal Regional Federal da 5ª Região</option>
-            <option value="TRT6">TRT6 - Tribunal Regional do Trabalho da 6ª Região</option>
+          <label for="caderno">Caderno do DJe</label>
+          <select id="caderno">
+            <option value="TODOS">Todos os Cadernos</option>
+            <option value="ADM">Administrativo</option>
+            <option value="JUD1">Judiciário - 1º Grau</option>
+            <option value="JUD2">Judiciário - 2º Grau</option>
+            <option value="EDITAIS">Editais</option>
           </select>
         </div>
 
-        <button type="submit" id="btnConsultar">Pesquisar Publicações</button>
+        <button type="submit">Abrir Consulta no DJe TJPE</button>
       </form>
     </main>
 
-    <div id="status"></div>
-    <section id="resultsContainer"></section>
+    <div class="info-box">
+      <strong>Observação:</strong> O DJe TJPE disponibiliza edições diárias em PDF divididas por matérias administrativas e judiciais. Esta busca direciona os parâmetros de pesquisa para a base oficial de arquivos do tribunal.
+    </div>
   </div>
 
   <script>
-    // Define as datas padrão como o dia de hoje
+    // Configura as datas de hoje por padrão
     const hoje = new Date().toISOString().split('T')[0];
     document.getElementById('dataInicio').value = hoje;
     document.getElementById('dataFim').value = hoje;
 
-    const form = document.getElementById('searchForm');
-    const statusDiv = document.getElementById('status');
-    const resultsContainer = document.getElementById('resultsContainer');
-    const btnConsultar = document.getElementById('btnConsultar');
-
-    form.addEventListener('submit', async (e) => {
+    document.getElementById('djeForm').addEventListener('submit', (e) => {
       e.preventDefault();
 
-      const nome = document.getElementById('nomeParte').value.trim();
+      const termo = encodeURIComponent(document.getElementById('termo').value.trim());
       const dtInicio = document.getElementById('dataInicio').value;
       const dtFim = document.getElementById('dataFim').value;
-      const tribunal = document.getElementById('tribunal').value;
 
-      if (!nome) return;
-
-      // Limpa resultados anteriores e ativa estado de carregamento
-      resultsContainer.innerHTML = '';
-      statusDiv.textContent = 'Consultando base de dados do DJEN...';
-      btnConsultar.disabled = true;
-
-      const url = new URL('https://comunicaapi.pje.jus.br/api/v1/comunicacao');
-      url.searchParams.append('siglaTribunal', tribunal);
-      url.searchParams.append('nomeParte', nome);
-      url.searchParams.append('dataDisponibilizacaoInicio', dtInicio);
-      url.searchParams.append('dataDisponibilizacaoFim', dtFim);
-
-      try {
-        const response = await fetch(url.toString(), {
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error(`Erro na requisição: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const itens = data.items || data.comunicacoes || [];
-
-        if (itens.length === 0) {
-          statusDiv.innerHTML = `Nenhuma publicação encontrada para <strong>"${nome}"</strong> no período selecionado.`;
-        } else {
-          statusDiv.innerHTML = `Encontrada(s) <strong>${itens.length}</strong> publicação(ões):`;
-          renderizarResultados(itens);
-        }
-
-      } catch (err) {
-        statusDiv.innerHTML = `<span style="color: #dc2626;">Erro ao realizar consulta: ${err.message}. Verifique sua conexão.</span>`;
-      } finally {
-        btnConsultar.disabled = false;
-      }
+      // Monta o redirecionamento com os parâmetros de consulta para o portal do TJPE
+      const urlTjpe = `https://www.tjpe.jus.br/dje/pesquisar?termo=${termo}&dtInicio=${dtInicio}&dtFim=${dtFim}`;
+      
+      window.open(urlTjpe, '_blank');
     });
-
-    function renderizarResultados(itens) {
-      itens.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'result-card';
-
-        const numeroProc = item.numeroProcesso || item.numero_processo || 'Número não informado';
-        const orgao = item.nomeOrgao || item.nome_orgao || 'Órgão não especificado';
-        const dataPub = item.dataDisponibilizacao || item.data_disponibilizacao || 'Data não informada';
-        const texto = item.texto || item.textoResumido || 'Sem conteúdo de texto disponível.';
-
-        card.innerHTML = `
-          <div class="result-header">
-            <span class="proc-number">Proc: ${numeroProc}</span>
-            <span class="badge-date">Disponibilização: ${dataPub}</span>
-          </div>
-          <div class="meta-info"><strong>Órgão:</strong> ${orgao}</div>
-          <div class="result-text">${texto}</div>
-        `;
-
-        resultsContainer.appendChild(card);
-      });
-    }
   </script>
 </body>
 </html>
